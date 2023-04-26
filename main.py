@@ -105,7 +105,7 @@ while True:
     #temp_range = int(dial / 1023) * 50 + 40
     temp_range = (dial * 50) / 1023 + 40
 
-    if temperature < temp_range:
+    if temperature > temp_range:
         grovepi.digitalWrite(relay_port, 1)
         grovepi.digitalWrite(buzzer_port, 1)
         setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.1f}F H:{2:.1f}%".format(temp_range, temperature, humidity))
