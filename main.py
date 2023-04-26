@@ -37,6 +37,7 @@ from grove_rgb_lcd import *
 
 th_sensor_port = 7
 rotary_angle_sensor_port = 0
+button_port = 4
 relay_port = 3
 buzzer_port = 2
 lcd_port = 1
@@ -45,6 +46,7 @@ setRGB(0, 128, 64)
 
 grovepi.pinMode(th_sensor_port, "INPUT")
 grovepi.pinMode(rotary_angle_sensor_port, "INPUT")
+grovepi.pinMode(button_port, "INPUT")
 grovepi.pinMode(relay_port, "OUTPUT")
 grovepi.pinMode(buzzer_port, "OUTPUT")
 
@@ -55,20 +57,6 @@ HVAC_on = False
 temperature = grovepi.dht(th_sensor_port, 0)[0]
 humidity = grovepi.dht(th_sensor_port, 0)[1]
 
-'''
-def read_temperature_humidity():
-    global temperature, humidity
-    temperature, humidity = grovepi.dht(th_sensor_port, 0)
-'''
-'''
-def read_distance():
-    global distance
-    distance = grovepi.ultrasonicRead(ultrasonic_ranger_port)
-
-def read_light_intensity():
-    global light_intensity
-    light_intensity = grovepi.analogRead(light_sensor_port)
-'''
 '''
 def control_HVAC():
     global HVAC_on
@@ -101,18 +89,29 @@ while True:
     temperature = (temperature * 1.8) + 32
 
     dial = grovepi.analogRead(rotary_angle_sensor_port)
-
-    #temp_range = int(dial / 1023) * 50 + 40
     temp_range = (dial * 50) / 1023 + 40
 
     if temperature > temp_range:
         grovepi.digitalWrite(relay_port, 1)
-        setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
+        HVAC_on = True
+        #setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
     else:
         grovepi.digitalWrite(relay_port, 0)
-        setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
+        HVAC_on = False
+        #setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
 
     if humidity > 80:
         grovepi.digitalWrite(buzzer_port, 1)
     else:
         grovepi.digitalWrite(buzzer_port, 0)
+
+    if grovepi.digitalRead(button_port) == 1:
+        HVAC_on = False
+        setText("Emergency/nReboot")
+    else:
+        HVAC_on = True
+
+    if HVAC_on == True:
+        setText_norefresh("AC ON   DT:{0:.0f}F\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
+    else:
+        setText_norefresh("AC OFF  DT:{0:.0f}F\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))    
