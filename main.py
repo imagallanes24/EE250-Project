@@ -105,7 +105,9 @@ while True:
     else:
         grovepi.digitalWrite(buzzer_port, 0)
 
-    if grovepi.digitalRead(button_port) == 1:
+    button_state = grovepi.digitalRead(button_port)
+
+    if button_state == HIGH:
         HVAC_on = False
         setText("Emergency/nReboot")
     else:
