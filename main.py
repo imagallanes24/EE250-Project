@@ -98,6 +98,7 @@ while True:
     #send_data()
     #time.sleep(1)
     [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
+    temperature = (temperature * 1.8) + 32
 
     dial = grovepi.analogRead(rotary_angle_sensor_port)
 
