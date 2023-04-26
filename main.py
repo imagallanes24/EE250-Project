@@ -107,8 +107,8 @@ while True:
     if temperature > temp_range or humidity > hum_range:
         grovepi.digitalWrite(relay_port, 1)
         grovepi.digitalWrite(buzzer_port, 1)
-        setText_norefresh("T: {0:.1f}F H: {1:.1f}%\nAC ON".format(temperature, humidity))
+        setText_norefresh("T:{0:.1f}F H:{1:.1f}%\nAC ON".format(temperature, humidity))
     else:
         grovepi.digitalWrite(relay_port, 0)
         grovepi.digitalWrite(buzzer_port, 0)
-        setText_norefresh("T: {0:.1f}F H: {1:.1f}%\nAC OFF".format(temperature, humidity))
+        setText_norefresh("T:{0:.1f}F H:{1:.1f}%\nAC OFF".format(temperature, humidity))
