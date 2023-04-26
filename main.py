@@ -41,7 +41,7 @@ relay_port = 3
 buzzer_port = 2
 lcd_port = 1
 
-#setRGB(0, 128, 64)
+setRGB(0, 128, 64)
 
 grovepi.pinMode(th_sensor_port, "INPUT")
 grovepi.pinMode(rotary_angle_sensor_port, "INPUT")
@@ -101,14 +101,14 @@ while True:
 
     dial = grovepi.analogRead(rotary_angle_sensor_port)
 
-    temp_range = int(dial / 1023 * 40)
+    temp_range = int(dial / 1023 * 72) + 32
     hum_range = int(dial /1023 * 60) + 20
 
     if temperature > temp_range or humidity > hum_range:
         grovepi.digitalWrite(relay_port, 1)
         grovepi.digitalWrite(buzzer_port, 1)
-        setText_norefresh("Temp: {0:.1f}C  Hum: {1:.1f}%\nAC ON".format(temperature, humidity))
+        setText_norefresh("T: {0:.1f}F H: {1:.1f}%\nAC ON".format(temperature, humidity))
     else:
         grovepi.digitalWrite(relay_port, 0)
         grovepi.digitalWrite(buzzer_port, 0)
-        setText_norefresh("Temp: {0:.1f}C  Hum: {1:.1f}%\nAC OFF".format(temperature, humidity))
+        setText_norefresh("T: {0:.1f}F H: {1:.1f}%\nAC OFF".format(temperature, humidity))
