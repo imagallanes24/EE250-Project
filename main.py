@@ -102,7 +102,7 @@ while True:
     dial = grovepi.analogRead(rotary_angle_sensor_port)
 
     #temp_range = int(dial / 1023) * 50 + 40
-    temp_range = (dial * 50) * 1023 + 40
+    temp_range = (dial * 50) / 1023 + 40
 
     if temperature > temp_range:
         grovepi.digitalWrite(relay_port, 1)
