@@ -106,8 +106,8 @@ while True:
     if temperature > temp_range:
         grovepi.digitalWrite(relay_port, 1)
         grovepi.digitalWrite(buzzer_port, 1)
-        setText_norefresh("DT:{0:.1f}F AC ON\nT:{1:.1f}F H:{2:.1f}%".format(temp_range, temperature, humidity))
+        setText_norefresh("DT:{0:.1f}F AC ON\nT:{1:.1f}F H:{2:.1f}%".format(dial, temperature, humidity))
     else:
         grovepi.digitalWrite(relay_port, 0)
         grovepi.digitalWrite(buzzer_port, 0)
-        setText_norefresh("DT:{0:.1f}F AC OFF\nT:{1:.1f}F H:{2:.1f}%".format(temp_range, temperature, humidity))
+        setText_norefresh("DT:{0:.1f}F AC OFF\nT:{1:.1f}F H:{2:.1f}%".format(dial, temperature, humidity))
