@@ -36,7 +36,7 @@ from grove_rgb_lcd import *
 #from threading import Thread
 
 th_sensor_port = 7
-rotary_angle_sensor_port = 4
+rotary_angle_sensor_port = 0
 relay_port = 3
 buzzer_port = 2
 lcd_port = 1
