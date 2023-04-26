@@ -94,24 +94,15 @@ while True:
     if temperature > temp_range:
         grovepi.digitalWrite(relay_port, 1)
         HVAC_on = True
-        #setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
     else:
         grovepi.digitalWrite(relay_port, 0)
         HVAC_on = False
-        #setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
 
     if humidity > 80:
         grovepi.digitalWrite(buzzer_port, 1)
     else:
         grovepi.digitalWrite(buzzer_port, 0)
-
-    button_state = grovepi.digitalRead(button_port)
-
-    if button_state == 0:
-        HVAC_on = False
-    else:
-        HVAC_on = True
-
+    
     if HVAC_on == True:
         setText_norefresh("AC ON   DT:{0:.0f}F\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
     else:
