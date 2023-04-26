@@ -109,7 +109,6 @@ while True:
 
     if button_state == 0:
         HVAC_on = False
-        setText("Emergency/nReboot")
     else:
         HVAC_on = True
 
