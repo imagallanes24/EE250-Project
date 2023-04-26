@@ -31,15 +31,17 @@ Visualization and control - MQTT server (publish/subscribe)
 
 import grovepi
 import time
-import requests
-from threading import Thread
+from grove_rgb_lcd import *
+#import requests
+#from threading import Thread
 
 th_sensor_port = 7
-#ultrasonic_ranger_port = 4
-#light_sensor_port = 2
 rotary_angle_sensor_port = 4
 relay_port = 3
 buzzer_port = 2
+lcd_port = 1
+
+#setRGB(0, 128, 64)
 
 grovepi.pinMode(th_sensor_port, "INPUT")
 grovepi.pinMode(rotary_angle_sensor_port, "INPUT")
@@ -48,14 +50,16 @@ grovepi.pinMode(buzzer_port, "OUTPUT")
 
 temperature = 0
 humidity = 0
-#distance = 0
-#light_intensity = 0
 HVAC_on = False
 
+temperature = grovepi.dht(th_sensor_port, 0)[0]
+humidity = grovepi.dht(th_sensor_port, 0)[1]
+
+'''
 def read_temperature_humidity():
     global temperature, humidity
     temperature, humidity = grovepi.dht(th_sensor_port, 0)
-
+'''
 '''
 def read_distance():
     global distance
@@ -65,7 +69,7 @@ def read_light_intensity():
     global light_intensity
     light_intensity = grovepi.analogRead(light_sensor_port)
 '''
- 
+'''
 def control_HVAC():
     global HVAC_on
     if temperature > 25:
@@ -74,20 +78,37 @@ def control_HVAC():
     elif temperature < 20:
         grovepi.digitalWrite(relay_port, 0)
         HVAC_on = False
-
+'''
+'''
 def send_data():
     global temperature, humidity, HVAC_on
     data = {'temperature': temperature,
             'humidity': humidity,
             'HVAC_on': HVAC_on}
     requests.post('https://localhost:5000/data', json=data)
-
+'''
+'''
 read_temperature_humidity_thread = Thread(target=read_temperature_humidity)
-control_HVAC_thread = Thread(target=control_HVAC)
+control_HVAC_thread = Tread(target=control_HVAC)
 
 read_temperature_humidity_thread.start()
 control_HVAC_thread.start()
-
+'''
 while True:
-    send_data()
-    time.sleep(1)
+    #send_data()
+    #time.sleep(1)
+    [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
+
+    dial = grovepi.analogRead(rotary_angle_sensor_port)
+
+    temp_range = int(dial / 1023 * 40)
+    hum_range = int(dial /1023 * 60) + 20
+
+    if temperature > temp_range or humidity > hum_range:
+        grovepi.digitalWrite(relay_port, 1)
+        grovepi.digitalWrite(buzzer_port, 1)
+        setText_norefresh("Temp: {0:.1f}C  Hum: {1:.1f}%\nAC ON".format(temperature, humidity))
+    else:
+        grovepi.digitalWrite(relay_port, 0)
+        grovepi.digitalWrite(buzzer_port, 0)
+        setText_norefresh("Temp: {0:.1f}C  Hum: {1:.1f}%\nAC OFF".format(temperature, humidity))
