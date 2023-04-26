@@ -104,6 +104,6 @@ while True:
         grovepi.digitalWrite(buzzer_port, 0)
     
     if HVAC_on == True:
-        setText_norefresh("AC ON   DT:{0:.0f}F\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
+        setText_norefresh("DT:{0:.0f}F AC ON\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
     else:
-        setText_norefresh("AC OFF  DT:{0:.0f}F\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))    
+        setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))    
