@@ -32,6 +32,7 @@ Visualization and control - MQTT server (publish/subscribe)
 import grovepi
 import time
 from grove_rgb_lcd import *
+import paho.mqtt.client as mqtt
 #import requests
 #from threading import Thread
 
@@ -53,6 +54,8 @@ grovepi.pinMode(buzzer_port, "OUTPUT")
 temperature = 0
 humidity = 0
 HVAC_on = False
+
+count = 0
 
 temperature = grovepi.dht(th_sensor_port, 0)[0]
 humidity = grovepi.dht(th_sensor_port, 0)[1]
@@ -82,28 +85,49 @@ control_HVAC_thread = Tread(target=control_HVAC)
 read_temperature_humidity_thread.start()
 control_HVAC_thread.start()
 '''
-while True:
-    #send_data()
-    #time.sleep(1)
-    [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
-    temperature = (temperature * 1.8) + 32
+def on_connect(client, userdata, flags, rc):
+    print("Connected to server with result code "+str(rc))
 
-    dial = grovepi.analogRead(rotary_angle_sensor_port)
-    temp_range = (dial * 50) / 1023 + 40
+if __name__ == '__main__':
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.connect(host="eclipse.usc.edu", port=11000, keepalive=60)
+    client.loop_start()
+    time.sleep(1)
 
-    if temperature > temp_range:
-        grovepi.digitalWrite(relay_port, 1)
-        HVAC_on = True
-    else:
-        grovepi.digitalWrite(relay_port, 0)
-        HVAC_on = False
+    while True:
+        #send_data()
+        #time.sleep(1)
+        time.sleep(0.01)
+        count = count + 1
 
-    if humidity > 80:
-        grovepi.digitalWrite(buzzer_port, 1)
-    else:
-        grovepi.digitalWrite(buzzer_port, 0)
-    
-    if HVAC_on == True:
-        setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
-    else:
-        setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))    
+        [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
+        temperature = (temperature * 1.8) + 32
+
+        dial = grovepi.analogRead(rotary_angle_sensor_port)
+        temp_range = (dial * 50) / 1023 + 40
+
+        if temperature > temp_range:
+            grovepi.digitalWrite(relay_port, 1)
+            HVAC_on = True
+        else:
+            grovepi.digitalWrite(relay_port, 0)
+            HVAC_on = False
+
+        if humidity > 80:
+            grovepi.digitalWrite(buzzer_port, 1)
+        else:
+            grovepi.digitalWrite(buzzer_port, 0)
+        
+        if HVAC_on == True:
+            setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
+        else:
+            setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
+
+        if (count % 10):
+            client.publish("imagalla/temp", f"{temperature}")
+            print("Publishing temperature data")
+            client.publish("imagalla/humid", f"{humidity}")
+            print("Publishing humidity data")
+            client.publish("imagalla/HVAC", f"{HVAC_on}")
+            print("Publishing HVAC data") 
