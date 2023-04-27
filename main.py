@@ -121,7 +121,7 @@ if __name__ == '__main__':
         emer_str = "EMERGENCY"
         if humidity > 80:
             grovepi.digitalWrite(buzzer_port, 1)
-            client.publish("imagalla/emergency", "{}".format(emer_str))
+            client.publish("imagalla/emergencyalert", "{}".format(emer_str))
         else:
             grovepi.digitalWrite(buzzer_port, 0)
         
