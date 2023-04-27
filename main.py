@@ -124,10 +124,10 @@ if __name__ == '__main__':
         else:
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
 
-        if (count % 10):
-            client.publish("imagalla/temp", f"{temperature}")
+        if (count % 100):
+            client.publish("imagalla/temp", "{}".format(temperature))
             print("Publishing temperature data")
-            client.publish("imagalla/humid", f"{humidity}")
+            client.publish("imagalla/humid", "{}".format(humidity))
             print("Publishing humidity data")
-            client.publish("imagalla/HVAC", f"{HVAC_on}")
+            client.publish("imagalla/HVAC", "{}".format(HVAC_on))
             print("Publishing HVAC data") 
