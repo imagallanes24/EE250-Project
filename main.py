@@ -91,7 +91,7 @@ def on_connect(client, userdata, flags, rc):
 if __name__ == '__main__':
     client = mqtt.Client()
     client.on_connect = on_connect
-    client.connect(host="172.20.10.4", port=11000, keepalive=60)
+    client.connect(host="172.20.10.4", port=1883, keepalive=60)
     client.loop_start()
     time.sleep(1)
 
