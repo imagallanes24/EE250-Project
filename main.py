@@ -109,9 +109,9 @@ if __name__ == '__main__':
         temp_range = (dial * 50) / 1023 + 40
 
         now = datetime.now()
-        date = now.strftime("%m/%d/%Y")
-        time = now.strftime("%H:%M:%S")
-        dateandtime = f"{date} {time}"
+        dateinfo = now.strftime("%m/%d/%Y")
+        timeinfo = now.strftime("%H:%M:%S")
+        dateandtime = f"{dateinfo} {timeinfo}"
 
         if temperature > temp_range:
             grovepi.digitalWrite(relay_port, 1)
