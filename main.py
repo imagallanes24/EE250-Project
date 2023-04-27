@@ -99,7 +99,7 @@ if __name__ == '__main__':
     while True:
         #send_data()
         #time.sleep(1)
-        time.sleep(0.01)
+        time.sleep(0.1)
         count = count + 1
 
         [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
