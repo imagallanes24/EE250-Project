@@ -130,7 +130,7 @@ if __name__ == '__main__':
         else:
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
 
-        if (count % 1000):
+        if (count % 10000):
             client.publish("imagalla/datetime", "{}".format(dateandtime))
             print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
