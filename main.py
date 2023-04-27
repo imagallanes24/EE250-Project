@@ -31,6 +31,7 @@ Visualization and control - MQTT server (publish/subscribe)
 
 import grovepi
 import time
+from datetime import datetime
 from grove_rgb_lcd import *
 import paho.mqtt.client as mqtt
 #import requests
@@ -107,6 +108,11 @@ if __name__ == '__main__':
         dial = grovepi.analogRead(rotary_angle_sensor_port)
         temp_range = (dial * 50) / 1023 + 40
 
+        now = datetime.now()
+        date = now.strftime("%m/%d/%Y")
+        time = now.strftime("%H:%M:%S")
+        dateandtime = f"{date} {time}"
+
         if temperature > temp_range:
             grovepi.digitalWrite(relay_port, 1)
             HVAC_on = True
@@ -124,7 +130,9 @@ if __name__ == '__main__':
         else:
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
 
-        if (count % 100):
+        if (count % 1000):
+            client.publish("imagalla/datetime", "{}".format(dateandtime))
+            print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
             print("Publishing temperature data")
             client.publish("imagalla/humid", "{}".format(humidity))
