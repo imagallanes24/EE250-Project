@@ -122,8 +122,10 @@ if __name__ == '__main__':
         if humidity > 80:
             grovepi.digitalWrite(buzzer_port, 1)
             client.publish("imagalla/emergencyalert", "{}".format(emer_str))
+            setRGB(200,0,0)
         else:
             grovepi.digitalWrite(buzzer_port, 0)
+            setRGB(0, 128, 64)
         
         HVAConoff = ""
         if HVAC_on == True:
