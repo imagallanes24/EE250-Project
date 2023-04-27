@@ -99,8 +99,6 @@ if __name__ == '__main__':
     while True:
         #send_data()
         #time.sleep(1)
-        time.sleep(0.1)
-        count = count + 1
 
         [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
         temperature = (temperature * 1.8) + 32
@@ -130,7 +128,7 @@ if __name__ == '__main__':
         else:
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
 
-        if (count % 10000):
+        if (count % 10):
             client.publish("imagalla/datetime", "{}".format(dateandtime))
             print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
@@ -138,4 +136,7 @@ if __name__ == '__main__':
             client.publish("imagalla/humid", "{}".format(humidity))
             print("Publishing humidity data")
             client.publish("imagalla/HVAC", "{}".format(HVAC_on))
-            print("Publishing HVAC data") 
+            print("Publishing HVAC data")
+
+        count += 1
+        time.sleep(0.5)
