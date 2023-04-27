@@ -22,7 +22,7 @@ def on_message_from_temp(client, userdata, message):
 def on_message_from_humid(client, userdata, message):
     print("Current Humidity: " + message.payload.decode())
 def on_message_from_HVAC(client, userdata, message):
-    print("HVAC: " + message.payload.decode() + "\n")
+    print("AC: " + message.payload.decode() + "\n")
     
 if __name__ == '__main__':
     client = mqtt.Client()

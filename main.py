@@ -123,19 +123,22 @@ if __name__ == '__main__':
         else:
             grovepi.digitalWrite(buzzer_port, 0)
         
+        HVAConoff = ""
         if HVAC_on == True:
             setText_norefresh("DT:{0:.0f}F AC ON \nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))
+            HVAConoff = "ON"
         else:
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
+            HVAConoff = "OFF"
 
-        if (count % 10):
+        if (count % 20):
             client.publish("imagalla/datetime", "{}".format(dateandtime))
             print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
             print("Publishing temperature data")
             client.publish("imagalla/humid", "{}".format(humidity))
             print("Publishing humidity data")
-            client.publish("imagalla/HVAC", "{}".format(HVAC_on))
+            client.publish("imagalla/HVAC", "{}".format(HVAConoff))
             print("Publishing HVAC data")
 
         count += 1
