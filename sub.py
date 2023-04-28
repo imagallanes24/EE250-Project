@@ -26,13 +26,11 @@ def on_message_from_humid(client, userdata, message):
 def on_message_from_HVAC(client, userdata, message):
     print("AC: " + message.payload.decode() + "\n")
 def on_message_emergency(client, userdata, message):
-    print("" + message.payload.decode())
+    print("EMERGENCY ALERT:" + message.payload.decode())
     
 if __name__ == '__main__':
     client = mqtt.Client()
     client.on_message = on_message
     client.on_connect = on_connect
-
     client.connect(host="172.20.10.4", port=1883, keepalive=60)
-
     client.loop_forever()
