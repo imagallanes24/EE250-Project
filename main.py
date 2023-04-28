@@ -59,7 +59,7 @@ if __name__ == '__main__':
     client.loop_start()
     time.sleep(1)
 
-    next_publish_time = datetime.now() + datetime.timedelta(seconds=5)
+    next_publish_time = datetime.now() + timedelta(seconds=5)
 
     while True:
         [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
@@ -106,4 +106,4 @@ if __name__ == '__main__':
             print("Publishing humidity data")
             client.publish("imagalla/HVAC", "{}".format(HVAConoff))
             print("Publishing HVAC data")
-            next_publish_time = now + datetime.timedelta(seconds=5)
+            next_publish_time = now + timedelta(seconds=5)
