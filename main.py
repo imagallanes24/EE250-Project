@@ -3,7 +3,7 @@ EE250 Project - Smart HVAC
 
 Hardware Components:
 - GrovePi Board
-- LCD RGB Backlight (D1)
+- LCD RGB Backlight (I2C-1)
 - Temperature & Humidity Sensor (D7)
 - Rotary Angle Sensor (A0)
 - Relay (D3)
@@ -16,9 +16,7 @@ Software Components:
 LCD: display current temp & humidity, desired temp, and AC Control
 Rotary Angle Sensor: adjust to set desired temp
 Relay: AC Control
-Buzzer: alert if humidity go past desirable range (possible fire)
-
-Flask web framework: view current and adjust temp & humidity and AC Control
+Buzzer: alert if humidity go past range 80% (possible fire)
 
 Requirement Check:
 Physical Nodes (2) - Raspberry Pi, Laptop
@@ -49,7 +47,6 @@ grovepi.pinMode(buzzer_port, "OUTPUT")
 
 temperature = 0
 humidity = 0
-count = 0
 HVAC_on = False
 
 def on_connect(client, userdata, flags, rc):
@@ -61,6 +58,8 @@ if __name__ == '__main__':
     client.connect(host="172.20.10.4", port=1883, keepalive=60)
     client.loop_start()
     time.sleep(1)
+
+    next_publish_time = datetime.now() + datetime.timedelta(seconds=5)
 
     while True:
         [temperature, humidity] = grovepi.dht(th_sensor_port, 0)
@@ -98,7 +97,7 @@ if __name__ == '__main__':
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
             HVAConoff = "OFF"
 
-        if (count % 5 == 0):
+        if now >= next_publish_time:
             client.publish("imagalla/datetime", "{}".format(dateandtime))
             print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
@@ -107,6 +106,4 @@ if __name__ == '__main__':
             print("Publishing humidity data")
             client.publish("imagalla/HVAC", "{}".format(HVAConoff))
             print("Publishing HVAC data")
-
-        count += 1
-        time.sleep(0.1)
+            next_publish_time = now + datetime.timedelta(seconds=5)
