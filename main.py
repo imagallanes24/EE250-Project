@@ -99,7 +99,7 @@ if __name__ == '__main__':
             HVAConoff = "OFF"
 
         if (count % 5 == 0):
-            client.publish("imagalla/datetime", "{}".format(count))
+            client.publish("imagalla/datetime", "{}".format(dateandtime))
             print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
             print("Publishing temperature data")
