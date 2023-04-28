@@ -10,8 +10,9 @@ Hardware Components:
 - Buzzer (D2)
 
 Software Components:
+- Python library
 - GrovePi library
-- Flask web framework
+- Paho.mqtt library
 
 LCD: display current temp & humidity, desired temp, and AC Control
 Rotary Angle Sensor: adjust to set desired temp
