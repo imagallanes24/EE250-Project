@@ -135,7 +135,7 @@ if __name__ == '__main__':
             setText_norefresh("DT:{0:.0f}F AC OFF\nT:{1:.0f}F H:{2:.0f}%".format(temp_range, temperature, humidity))   
             HVAConoff = "OFF"
 
-        if (count % 20 == 0):
+        if (count % 50 == 0):
             client.publish("imagalla/datetime", "{}".format(count))
             print("Publishing datetime data")
             client.publish("imagalla/temp", "{}".format(temperature))
@@ -146,4 +146,4 @@ if __name__ == '__main__':
             print("Publishing HVAC data")
 
         count += 1
-        time.sleep(0.5)
+        time.sleep(0.1)
