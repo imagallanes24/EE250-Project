@@ -2,7 +2,7 @@
 ## **"Smart HVAC System"** created by Issac Magallanes
 
 
-Submission Demo Link: [YouTube](https://drive.google.com/file/d/1BxWqBJm5qHQvtorulevsBsMeADJpt_dN/view?usp=sharing)
+Submission Demo Link: [Google Drive](https://drive.google.com/file/d/1BxWqBJm5qHQvtorulevsBsMeADJpt_dN/view?usp=sharing)
 
 **Program Instructions:**
 
