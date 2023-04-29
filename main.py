@@ -17,7 +17,7 @@ Software Components:
 LCD: display current temp & humidity, desired temp, and AC Control
 Rotary Angle Sensor: adjust to set desired temp
 Relay: AC Control
-Buzzer: alert if humidity go past range 80% (possible fire)
+Buzzer: alert if humidity drops below range 15% (possible fire)
 
 Requirement Check:
 Physical Nodes (2) - Raspberry Pi, Laptop
@@ -82,7 +82,7 @@ if __name__ == '__main__':
             HVAC_on = False
 
         emer_str = "HIGH HUMIDITY (POSSIBLE FIRE)"
-        if humidity > 80:
+        if humidity < 15:
             grovepi.digitalWrite(buzzer_port, 1)
             client.publish("imagalla/emergencyalert", "{}".format(emer_str))
             setRGB(200,0,0)
